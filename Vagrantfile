@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
   	v.memory = 1024
   end
   
-  config.vm.provision "ansible_local" do |ansible|
+  config.vm.provision "ansible_local", run: "always" do  |ansible|
     ansible.playbook = "initial-setup.yml"
   end
 
