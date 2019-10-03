@@ -1,0 +1,28 @@
+---
+- name: App Provision
+  hosts: all
+  become: true
+
+
+  tasks:
+
+    - name: Install pip
+      yum: 
+        pkg: python-pip
+        state: present
+
+    - name: Build docker image from Dockerfile
+      docker_image:
+        name: test
+        state: Build
+
+    - name: Run the Container
+      docker_container:
+        image: test:latest
+        state: running
+
+    - name: Check Container running
+      shell: docker 
+
+
+
