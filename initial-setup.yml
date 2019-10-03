@@ -3,23 +3,51 @@
   hosts: all
   become: true
 
+  vars:
+
+    docker_repo: docker-ce-stable
+    docker_version: latest
+    docker_repo_url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    docker_users:
+      - vagrant
+
   tasks:
     
-    - name: Install aptitude using apt
-      apt: name=aptitude state=latest force_apt_get=yes
-
-    - name: Add Docker APT repository
-      apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/{{ansible_distribution|lower}} {{ansible_distribution_release}} stable
+    - name: Ensure yum-utils exists
+      yum:
+        pkg: yum-utils
         state: present
 
-    - name: Install Docker-compose
-      shell: curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-      ignore_errors: yes
+    - name: Add Docker repository
+      shell: yum-config-manager --add repo {{docker_repo}}
+
+    - name: Ensure latest docker version is installed
+      yum:
+        pkg: ['docker-ce', 'python-docker-py']
+        state: installed
+        enablerepo: "{{ docker_repo }}"
+      notify:
+        - restar docker
+      when: docker_version == 'latest'
+
+    - name: Ensure docker is enabled to start at boot
+      service:
+        name: docker
+        enable: yes
+
+    - name: Add users to docker group
+      shell: "usermod -a -G docker {{ item }}"
+      with_items:
+        - "{{ docker_users }}"
+
+  
+    - name: Install docker compose
+      shell: >
+        curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+        chmod +x /usr/local/bin/docker-compose
+      when: "'docker-compose: No such file or directory' in compose.stderr"
       
-    - name: Update apt and install docker-ce
-      apt: update_cache=yes name=docker-ce state=latest
-      
+         
   handlers:
 
     - name: restart docker
