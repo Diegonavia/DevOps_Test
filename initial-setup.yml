@@ -3,7 +3,7 @@
   hosts: all
   become: true
 
-    tasks:
+  tasks:
     
     - name: Install aptitude using apt
       apt: name=aptitude state=latest force_apt_get=yes
@@ -20,7 +20,6 @@
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
       
-  
   handlers:
 
     - name: restart docker
