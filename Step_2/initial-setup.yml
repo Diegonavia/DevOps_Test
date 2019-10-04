@@ -1,0 +1,89 @@
+---
+- name: Initial Provision
+  hosts: all
+  become: true
+
+  vars:
+
+    docker_repo: docker-ce-stable
+    docker_version: latest
+    docker_repo_url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    docker_users:
+      - vagrant
+    docker_conf: >
+      ExecStart=/usr/bin/dockerd
+      --storage-driver=devicemapper
+      --selinux-enabled=false
+
+  tasks:
+
+    - name: Ensures yum-utils exists
+      yum:
+        pkg: yum-utils
+        state: present
+
+    - name: Adds docker repo
+      shell: yum-config-manager --add-repo {{ docker_repo_url }}
+
+    - name: Ensure latest docker version is installed
+      yum:
+        pkg: ['docker-ce', 'python-docker-py']
+        state: installed
+        enablerepo: "{{ docker_repo }}"
+      notify:
+        - restart docker
+      when: docker_version == 'latest'
+
+    - name: "Ensure that the specified docker version is installed"
+      yum:
+        pkg: ['docker-ce-{{docker_version }}.ce-1.el7.centos', 'python-docker-py']
+        state: installed
+        enablerepo: "{{ docker_repo }}"
+      when: docker_version != 'latest'
+      notify:
+        - restart docker
+
+    - name: Ensure docker is enabled to start at boot.
+      service:
+        name: docker
+        enabled: yes
+
+    - name: Add users to docker group
+      shell: "usermod -a -G docker {{ item }}"
+      with_items:
+        - "{{ docker_users }}"
+
+    - name: Apply custom configuration
+      lineinfile:
+        dest: /usr/lib/systemd/system/docker.service
+        regexp: ^ExecStart
+        line: "{{ docker_conf }}"
+        backup: yes
+      when: docker_conf is defined
+      register: conf
+      notify:
+        - restart docker
+
+    - name: Reload conf systemd
+      shell: systemctl daemon-reload
+      when: docker_conf is defined and conf.changed
+
+    - name: "Check if docker compose is already installed"
+      shell: "/usr/local/bin/docker-compose -v"
+      register: compose
+      ignore_errors: yes
+      no_log: True
+      failed_when: "'command not found' in compose.stderr"
+
+    - name: "Installs docker compose"
+      shell: >
+        curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+        chmod +x /usr/local/bin/docker-compose
+      when: "'docker-compose: No such file or directory' in compose.stderr"
+
+  handlers:
+
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted
