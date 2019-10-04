@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-# DevOps_Test
-Pincipal Financial Group DevOps-Engineer
-
-- Creación de Maquinas virtuales en Vagrant haciendo uso de distintas herramientas necesarias para provisionar infraestructura, Integración Continua, Osquestrar Aplicaciones dockerizadas entre otros.
-=======
 # Proyecto DevOps Engineer
 
 ## Resumen 📃
@@ -235,4 +229,3 @@ Para este caso también deberemos indicar la interfaz de puente de conexión que
 En el diagrama podemos observar el flujo que sigue nuestro proyecto. A través de un Vagrantfile inicializamos nuestra máquina virtual por medio de **vagrant up** el cual realiza la provision de la infraestructura a través de **Ansible**. Mediante un playbook local logramos instalar **Docker** el cual se encarga de generar una imagen de nuestra aplicación Web para que sea desplegada a través de Ansible en nuestra máquina virtual. Mediante la ejecución de un job en **Jenkins** gatillado por medio de un **git push** a nuestro repositorio, se crea un archivo **Zip** del playbook de ansible el cual es enviado a nuestra máquina virtual a través de SSH para que luego sea ejecutada la playbook de **Ansible** en la máquina remota.
 
 
->>>>>>> Dev
