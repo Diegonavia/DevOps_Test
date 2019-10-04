@@ -1,28 +1,30 @@
 ---
 - name: App Provision
-  hosts: all
+  hosts: localhost
   become: true
 
 
   tasks:
 
-    - name: Install pip
-      yum: 
-        pkg: python-pip
-        state: present
+    - name: Install the latest version of Git
+      yum:
+        name: git
+        state: latest
 
-    - name: Build docker image from Dockerfile
-      docker_image:
-        name: test
-        state: present
+    - git: 
+        repo: 'https://github.com/Diegonavia/application'
+        dest: /app
+        
+    - name: Build application
+      shell: /usr/local/bin/docker-compose up -d --build
+      args:
+        chdir: /app
 
-    - name: Run the Container
-      docker_container:
-        image: test:latest
-        state: running
+    
 
-    - name: Check Container running
-      shell: docker 
+      
+
+
 
 
 
