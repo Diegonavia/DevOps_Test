@@ -2,7 +2,7 @@
 
 ## Resumen 📃
 
-Este proyecto se basa en el aprovisionamiento de infraestructura a través de herramientas automatizadas, que permitan la aceleración de procesos manuales y permitan un mejor desempeño en los ambientes de desarrollo, Prueba, producción.
+Este proyecto se basa en el aprovisionamiento de infraestructura  a través de herramientas automatizadas, usando virtualización que permitan la aceleraciónintegración continuaentre distintos sistemas creando asi ambientes mas estables, tanto de desarrollo, Prueba, producción.
 
 ## Prerrequisitos :exclamation:
 
@@ -10,12 +10,12 @@ Este proyecto se basa en el aprovisionamiento de infraestructura a través de he
 - Necesitarás una herramienta de creación de entornos de desarrollo, utilizaremos Vagrant version 2.2.5
 - Editor de código fuente donde almacenar las carpetas y el código, utilizaremos Visual Studio Code versión 1.36.31 (Recomendación) :nerd_face:
 
-## Ejecución :dizzy:
+## Paso a Paso :dizzy:
 
 - ### Crear Maquina Virtual con Vagrant y Provisionar Docker Engine con Ansible :heavy_check_mark:
-- Abrir la consola de comandos y crear una carpeta en donde realizaremos el proyecto. (mkdir folder)
-- Luego nos posicionamos en esa carpeta. (cd folder)
-- Ejecutamos el comando (vagrant init) para que se cree un archivo Vagrantfile en la ubicación donde ejecutamos el comando, que cuenta con los datos mínimos e indispensables para empezar a crear nuestra maquina virtual. :muscle:
+- Abrir la consola de comandos y crear una carpeta en donde realizaremos el proyecto. **mkdir folder**
+- Luego nos posicionamos en esa carpeta. **cd folder**
+- Ejecutamos el comando **vagrant init** para que se cree un archivo Vagrantfile en la ubicación donde ejecutamos el comando, que cuenta con los datos mínimos e indispensables para empezar a crear nuestra maquina virtual. :muscle:
 - En este archivo Vagrantfile, definiremos el sistema operativo que vamos a utilizar dentro de nuestra maquina virtual. Para este caso utilizaremos Linux Centos 7.
 - El Vagrantfile que usaremos se encuentra a continuación. :computer:
 
@@ -42,9 +42,9 @@ Este proyecto se basa en el aprovisionamiento de infraestructura a través de he
           end
           
           
-En el cual definiremos el proveedor a utilizar en la maquina virtual (config.vm.provider "virtualbox" do |v|), definiremos el box del sistema operativo que utilizaremos (config.vm.box = "centos/7"), se configuraran los puertos para la maquina virtual (config.vm.network "forwarded_port", guest: 8080, host: 8080), además definiremos nuestra herramientra de provisionamiento de infraestructura que usaremos el cual será ansible (config.vm.provision "ansible_local", run: "always" do  |ansible|), haremos uso de playbook o tareas para el aprovisionamiento de la infraestructura de nuestra maquina y lo invocaremos mediante la siguiente instrucción ( ansible.playbook = "initial-setup.yml") en la cual hacemos referencia a un archivo llamado "initial-setup.yml" el cual contiene todas las tareas a ejecutarse para el aprovisionamiento de nuestro docker engine. :whale:
+En el cual definiremos el proveedor a utilizar en la maquina virtual (config.vm.provider "virtualbox" do |v|), definiremos el box del sistema operativo que utilizaremos **config.vm.box = "centos/7"**, se configuraran los puertos para la maquina virtual **config.vm.network "forwarded_port, guest: 8080, host: 8080**, además definiremos nuestra herramientra de provisionamiento de infraestructura que usaremos el cual será ansible **config.vm.provision "ansible_local", run: "always" do  |ansible|**, haremos uso de playbook o tareas para el aprovisionamiento de la infraestructura de nuestra maquina y lo invocaremos mediante la siguiente instrucción **ansible.playbook = "initial-setup.yml** en la cual hacemos referencia a un archivo llamado "initial-setup.yml" el cual contiene todas las tareas a ejecutarse para el aprovisionamiento de nuestro docker engine. :whale:
 
-Además de esto encontramos el archivo "ansible.playbook = "app-provision.yml" el cual utilizaremos para desplegar una aplicación dockerizada en nuestra máquina virtual haciendo uso de docker-compose. :whale:
+Además de esto encontramos el archivo **ansible.playbook = "app-provision.yml"** el cual utilizaremos para desplegar una aplicación dockerizada en nuestra máquina virtual haciendo uso de docker-compose. :whale:
 
 - A continuación tenemos nuestro archivo initial-setup.yml :computer:
 
@@ -142,18 +142,18 @@ Además de esto encontramos el archivo "ansible.playbook = "app-provision.yml" e
               
  En este archivo definiremos las tareas a ejecutarse para el aprovisionamiento de nuestro docker engine :whale:
  
- - Comenzaremos por la definición de nuestro hosts el cual le indicaremos que no solamente podemos ejecutarlo de manera local sino de cualquier forma (hosts: all), luego le decimos que somos usuario root para obtener todos los permisos para realizar las ejecuciones (become:true). Definiremos algunas variables entre las cuales se encuentra la Url donde se encuentra almacenado nuestro repositorio de docker :whale:, la version que utilizaremos, definiremos un usuario para asignar al grupo de docker, y algunos comandos de configuración. :electric_plug:
+ - Comenzaremos por la definición de nuestro inventario de hosts el cual le indicaremos que pueda ser accedido desde cualquier maquina definida sin restricciones con **hosts: all**, luego le decimos que somos usuario root para obtener todos los permisos para realizar las ejecuciones **become:true**. Definiremos algunas variables entre las cuales se encuentra la Url donde se encuentra almacenado nuestro repositorio de docker :whale:, la version que utilizaremos, definiremos un usuario para asignar al grupo de docker, y algunos comandos de configuración. :electric_plug:
  
- - Luego empezaremos con las tareas de aprovisionamiento de nuestra infraestructura, definiendo los paquetes que debemos usar en nuestro sistema operativo Centos7 ("Ensures yum-utils exists"), añadiremos el repositorio donde se encuentra alojado docker para poder descargarlo ("Adds docker repo"), nos aseguraremos que la ultima version de docker :whale: está instalada ("Ensure latest docker version is installed"), nos aseguraremos que nuestro docker está habilitado para iniciar al arranque de nuestra máquina ("Ensure docker is enabled to start at boot"), añadiremos el usuario que definimos en las variables "vagrant" a nuestro grupo de docker ("Add users to docker group"), aplicaremos diversas configuraciones para luego proceder a chequear si efectivamente tenemos instalado el docker-compose ("Check if docker compose is already installed"), para luego proceder a la instalación en caso de que no lo encuentre ("Installs docker compose"), luego de esto reiniciamos nuestro docker engine y estará operativo para su uso :whale: :sunglasses:
+ - Luego empezaremos con las tareas de aprovisionamiento de nuestra infraestructura, definiendo los paquetes que debemos usar en nuestro sistema operativo Centos7 **"Ensures yum-utils exists"**, añadiremos el repositorio donde se encuentra alojado docker para poder descargarlo **"Adds docker repo"**, nos aseguraremos que la ultima version de docker :whale: está instalada **"Ensure latest docker version is installed"**, nos aseguraremos que nuestro docker está habilitado para iniciar al arranque de nuestra máquina **"Ensure docker is enabled to start at boot"**, añadiremos el usuario que definimos en las variables **"vagrant"** a nuestro grupo de docker **"Add users to docker group"**, aplicaremos diversas configuraciones para luego proceder a chequear si efectivamente tenemos instalado el docker-compose **"Check if docker compose is already installed"**, para luego proceder a la instalación en caso de que no lo encuentre **"Installs docker compose"**, luego de esto reiniciamos nuestro docker engine y estará operativo para su uso :whale: :sunglasses:
  
-Para provisionar nuestro docker engine haciendo uso de ansible verificamos que estemos en la carpeta de nuestro proyecto a traves del comando "pwd" y una vez estando dentro, procederemos a inicializar nuestra máquina virtual con el comando (vagrant up) :zap:, luego de inicializar se nos pedirá que definamos una interfaz de puente para una red pública definida en el Vagrantfile (Esto se necesitará para la segunda parte del proyecto, en la cual debemos conectar dos máquinas virtuales por medio de ssh). Al inicializarse la máquina virtual nos aparecerá el mensaje "Which interface should the network bridge to?" en el cual indicaremos el número "1" :rocket:
+Para provisionar nuestro docker engine haciendo uso de ansible verificamos que estemos en la carpeta de nuestro proyecto a traves del comando **"pwd"** y una vez estando dentro, procederemos a inicializar nuestra máquina virtual con el comando **vagrant up** :zap:, luego de inicializar se nos pedirá que definamos una interfaz de puente para una red pública definida en el Vagrantfile (Esto se necesitará para la segunda parte del proyecto, en la cual debemos conectar dos máquinas virtuales por medio de ssh). Al inicializarse la máquina virtual nos aparecerá el mensaje **"Which interface should the network bridge to?"** en el cual indicaremos el número "1" :rocket:
 
 
-PS: Además de usar "vagrant up" para inicializar la máquina, podemos usar tambien "vagrant halt" para apagarla, "vagrant provision" para provisionar la infraestructura con ansible, "vagrant reload" para realizar un restart de la máquina virtual, entre otros. :neckbeard:
+PS: Además de usar **vagrant up** para inicializar la máquina, podemos usar tambien **vagrant halt** para apagarla, **vagrant provision** para provisionar la infraestructura con ansible, **vagrant reload** para realizar un restart de la máquina virtual, entre otros. :neckbeard:
 
 ### Desplegar una aplicación dockerizada sobre la Máquina virtual con Ansible y docker-compose
 
-Haremos uso de nuestro Vagrantfile para realizar esta ejecución de manera automática a través del playbook que definimos anteriormente ("app-provision.yml") el cual lo veremos a continuación :computer:
+Haremos uso de nuestro Vagrantfile para realizar esta ejecución de manera automática a través del playbook que definimos anteriormente **"app-provision.yml"** el cual lo veremos a continuación :computer:
 
     ---
     - name: App Provision
@@ -180,11 +180,11 @@ Este playbook es mas corto que el anterior, ya tenemos instalado docker-compose 
 
 Primero, asi como en el playbook anterior, definimos el host y nos otorgamos permisos de usuario root (become: true) para ejecutar las tareas. Instalamos el software de control de versiones GIT ya que será necesario para poder descargar nuestra aplicación de un repositorio remoto, en este caso "Github" y luego procedemos a la creación de nuestra imagen de la aplicación, el cual en este caso es un login, pero puede ser cualquier aplicación que ustedes deseen.
 
-Procedemos a levantar nuestra máquina virtual con nuestro comando (vagrant up) y esperamos que se ejecuten todas las validaciones y tareas... :recycle:
+Procedemos a levantar nuestra máquina virtual con nuestro comando **vagrant up** y esperamos que se ejecuten todas las validaciones y tareas... :recycle:
 
 PS: al igual que en el paso anterior, debemos especificar con cual interfaz la conexión hará el puente, por lo que le volvemos a indicar el número "1" :rocket:
 
-Una vez nuestra máquina virtual arriba, ubicamos nuesta Vm en Virtual Box con el nombre que seleccionamos en nuestro Vagrantfile (PFG_VM) la cual debería estar en estado "running" :white_check_mark:. Procedemos a loguearnos con el (usuario: vagrant, password: vagrant), realizamos un chequeo de nuestra aplicación creada con el comando (docker images/docker ps) y procedemos a levantar nuestra aplicación con (docker-compose up -d).
+Una vez nuestra máquina virtual arriba, ubicamos nuesta Vm en Virtual Box con el nombre que seleccionamos en nuestro Vagrantfile **PFG_VM** la cual debería estar en estado **"running"** :white_check_mark:. Procedemos a loguearnos con el (usuario: vagrant, password: vagrant), realizamos un chequeo de nuestra aplicación creada con el comando **docker images/docker ps** y procedemos a levantar nuestra aplicación con **docker-compose up -d**.
 
 - ### Crear otra máquina virtual con Jenkins incorporado :heavy_check_mark:
 
@@ -221,5 +221,11 @@ Para este caso también deberemos indicar la interfaz de puente de conexión que
 
 
 ## Diagrama de flujo 📊
+
+
+
+
+
+En el diagrama podemos observar el flujo que sigue nuestro proyecto. A través de un Vagrantfile inicializamos nuestra máquina virtual por medio de **vagrant up** el cual realiza la provision de la infraestructura a través de **Ansible**. Mediante un playbook local logramos instalar **Docker** el cual se encarga de generar una imagen de nuestra aplicación Web para que sea desplegada a través de Ansible en nuestra máquina virtual. Mediante la ejecución de un job en **Jenkins** gatillado por medio de un **git push** a nuestro repositorio, se crea un archivo **Zip** del playbook de ansible el cual es enviado a nuestra máquina virtual a través de SSH para que luego sea ejecutada la playbook de **Ansible** en la máquina remota.
 
 
