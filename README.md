@@ -223,6 +223,53 @@ Para este caso también deberemos indicar la interfaz de puente de conexión que
 ## Diagrama de flujo 📊
 
 
+![Diagrama_de_flujo](https://user-images.githubusercontent.com/45079819/66224616-b790e300-e6ac-11e9-8049-8fdf27640ad0.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
