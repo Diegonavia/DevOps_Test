@@ -14,7 +14,7 @@
     - name: Build docker image from Dockerfile
       docker_image:
         name: test
-        state: Build
+        state: present
 
     - name: Run the Container
       docker_container:
