@@ -222,60 +222,8 @@ Para este caso también deberemos indicar la interfaz de puente de conexión que
 
 ## Diagrama de flujo 📊
 
-<<<<<<< HEAD
-
 ![Diagrama_de_flujo](https://user-images.githubusercontent.com/45079819/66224616-b790e300-e6ac-11e9-8049-8fdf27640ad0.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-![Diagrama_de_flujo](https://user-images.githubusercontent.com/45079819/66224616-b790e300-e6ac-11e9-8049-8fdf27640ad0.png)
->>>>>>> Dev
 
 En el diagrama podemos observar el flujo que sigue nuestro proyecto. A través de un Vagrantfile inicializamos nuestra máquina virtual por medio de **vagrant up** el cual realiza la provision de la infraestructura a través de **Ansible**. Mediante un playbook local logramos instalar **Docker** el cual se encarga de generar una imagen de nuestra aplicación Web para que sea desplegada a través de Ansible en nuestra máquina virtual. Mediante la ejecución de un job en **Jenkins** gatillado por medio de un **git push** a nuestro repositorio, se crea un archivo **Zip** del playbook de ansible el cual es enviado a nuestra máquina virtual a través de SSH para que luego sea ejecutada la playbook de **Ansible** en la máquina remota.
 
