@@ -184,7 +184,7 @@ Procedemos a levantar nuestra máquina virtual con nuestro comando **vagrant up*
 
 PS: al igual que en el paso anterior, debemos especificar con cual interfaz la conexión hará el puente, por lo que le volvemos a indicar el número "1" :rocket:
 
-Una vez nuestra máquina virtual arriba, ubicamos nuesta Vm en Virtual Box con el nombre que seleccionamos en nuestro Vagrantfile **PFG_VM** la cual debería estar en estado **"running"** :white_check_mark:. Procedemos a loguearnos con el (usuario: vagrant, password: vagrant), realizamos un chequeo de nuestra aplicación creada con el comando **docker images/docker ps** y procedemos a levantar nuestra aplicación con **docker-compose up -d**.
+Una vez nuestra máquina virtual arriba, ubicamos nuesta Vm en Virtual Box con el nombre que seleccionamos en nuestro Vagrantfile **PFG_VM** la cual debería estar en estado **"running"** :white_check_mark:. Procedemos a loguearnos con el (usuario: vagrant, password: vagrant), realizamos un chequeo de nuestra aplicación creada con el comando **docker images/docker ps**. Verificamos la ip de nuestra Vm con el comando **ip addr**, copiamos esa ip, exponemos el puerto 3000 (XXX.XXX.X.XXX:3000) y obtendremos nuestra aplicación funcionando, en este caso un Login.
 
 - ### Crear otra máquina virtual con Jenkins incorporado :heavy_check_mark:
 
@@ -215,14 +215,12 @@ A continuación el código de nuestro Vagrantfile para levantar nuestra Jenkins 
 
       end
 
-El Vagrantfile está practicamente igual al anterior, con la diferencia que tiene puertos diferentes para poder ejecutar esta máquina virtual simultaneamente con la anterior y los puertos no entren en conflicto uno con otro. Además tiene la particularidad de tener la configuración inline de un comando shell, el cual verifica si ya existe jenkis en la máquina, y sino es así crea una arpeta llamada jenkins en la cual se va almacenar una imagen docker de jenkins que ejecutará en el puerto 8080. Básicamente eso es lo que hace el script shell, levantar la imagen de jenkins en nuestra máquina virtual, para que luego se pueda comunicar por ssh hacia nuestra primera máquina. :checkered_flag:
+El Vagrantfile está practicamente igual al anterior, con la diferencia que tiene puertos diferentes para poder ejecutar esta máquina virtual simultaneamente con la anterior y los puertos no entren en conflicto uno con otro. Además tiene la particularidad de tener la configuración inline de un comando shell, el cual verifica si ya existe jenkis en la máquina, y sino es así crea una carpeta llamada jenkins en la cual se va almacenar una imagen docker de jenkins que se ejecutará en el puerto 8080. Para conocer la ip de nuestra 2da Vm, introducimos de igual manera el comando **ip addr** para obtener la dirección ip desde la cual podremos acceder a nuestra aplicación de Jenkins mediante el puerto ya expuesto (XXX.XXX.X.XXX:8080). Básicamente eso es lo que hace el script shell, levantar la imagen de jenkins en nuestra máquina virtual, para que luego se pueda comunicar por ssh hacia nuestra primera máquina. :checkered_flag:
 
 Para este caso también deberemos indicar la interfaz de puente de conexión que queremos para nuestra máquina, colocaremos el número "1" de la misma  forma. 🚀
 
 
 ## Diagrama de flujo 📊
-
-
 
 
 
