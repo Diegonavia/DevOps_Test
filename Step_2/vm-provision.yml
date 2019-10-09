@@ -1,0 +1,29 @@
+---
+- name: App Provision
+  hosts: apptest
+  become: true
+
+  tasks:
+
+    - name: Install the latest version of Git
+      yum:
+        name: git
+        state: latest
+
+    - git: 
+        repo: 'https://github.com/Diegonavia/application'
+        dest: /app
+        
+    - name: Build application
+      shell: /usr/local/bin/docker-compose up -d --build
+      args:
+        chdir: /app
+
+    
+
+      
+
+
+
+
+

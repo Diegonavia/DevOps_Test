@@ -1,0 +1,8 @@
+[all:vars]
+
+ansible_connection = ssh
+
+[test]
+
+apptest ansible_host=192.168.43.8 ansible_user=vagrant ansible_private_key_file=/var/jenkins_home/ansible/key
+
