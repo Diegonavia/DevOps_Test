@@ -236,36 +236,6 @@ A continuación el código del archivo Hosts :computer:
     
 Primero declaramos todas las variables de ansible, luego determinamos de que manera ansible se va a conectar a nuestra maquina remota **(ansible_connection = ssh)** el cual es por medio de **SSH**. Definimos un grupo llamado **test** en el cual definiremos nuestro host de ansible. Le colocaremos como nombre a nuestro host **apptest** el cual usaremos luego en nuestro ansible-playbook para establecer la conexión. Definimos el host al cual nos vamos a conectar con **ansible_host=192.168.1.125** (En este caso coloque esta ip a modo de ejemplo la cual estaba operativa con la aplicación corriendo al momento de realizar la prueba). Luego definimos el usuario con el cual nos vamos a conectar **ansible_user=vagrant**, en este caso sería vagrant. Luego definiremos donde está la key que usaremos para conectarnos a nuestra Vm remota, **ansible_private_key_file=/var/jenkins_home/ansible/key**, en este caso la private_key la podemos encontrar en nuestro archivo .vagrant de nuestra máquina virtual a la cual queremos conectarnos. (/.vagrant/machines/default/virtualbox/private_key). Nótese que la ruta a la cual hacemos referencia esta key se encuentra en nuestra segunda máquina virtual de jenkins dentro de una carpeta llamada ansible. Esta carpeta debemos crearla dentro de nuestro jenkins_home y ubicar el archivo de nuestra private_key **"key"**.
 
-Así se ve nuestro archivo key con la información de nuestra private_key :computer:
-
-      -----BEGIN RSA PRIVATE KEY-----
-      MIIEowIBAAKCAQEA59vYXcTkhrOwn35GtqN67DmVWbHbbXQZmehvYUypSFjlzuT1
-      Om2rFQrb+V0v/5fxPStbY/Dqa5Eda9r4u2/ZCCRpEi2cuYx4DIRr7h+DNM5KcyKe
-      DhoLCww8d1ruQ2QTbSkuqfLRkz+20iqS5JdDr5iR+U0GvSBTZd/e5i35aMQixerM
-      JM89iSPUhMnH9cLPub6BbgVuej5YUDqaMiqG4/NAsu8w7Y4wHwG6wgZvgnXGEfyz
-      OZa7GHWJ+XUYw2HP7FSmE9/iET4vu3IP5eSqZ+/cosj6nRW51WsLvxi7CY2byy6M
-      r/l7VkltsDgDM7tmyDr1uGA9uHQxgHFnmf2LlwIDAQABAoIBAGifzsm5YDncedXu
-      wHAH4x8XeOpplI+WdTr7JM9uLXFFFCZBMNt1w16ScOLchx057hThLLMzckSpzfHu
-      dJD4DqJa88LNLEyaM03Kr31bYPSCJhxAQbwxSkxo8BwXvy5PyWhXzgPIW4Orm47I
-      wVI/Y76oBS7O8DyFiryMweNyWXpJM1sMsmradJKbi4n5nTRQ4fReHPjjSmN7CQUQ
-      nKber/0XeVf829DTqIEsNkpPwZbhwdgkZYEm2l+yOnL1I/veTArgBi/87hRqkCXC
-      hJ7vQugVXQqfOaRzEpVxFCXzhLnOJcXf1+wbXiDoZfPbqMq4E7WPePrQE7SoddGw
-      DvU+GqkCgYEA9LWmGj5TsoXdZON1SBP9CLVuCj0DK5rx4HqaHWF3+nt1tH33xUa9
-      X6BlyilhwSGc7EWSkPueco5EcKrSlgAytPwtndUZLxCq2bakJAOUyr3TG+dhAbLi
-      jcr6Yak00JczEW8qsKwvwrSBXyjNMKqQOXEdJwnskJb9GQmh0VLQ0XsCgYEA8o5p
-      OuuFlLdbMXRSyLON9Smodw/D8vLH6i2LxCiGGSyVR7iR966/58PLcWR4SpAVNOIv
-      B6lnNCqMkAnp/z5UX1czDAT1RVaQZ7xlMPWXVbgvfkIx5IFqNcZioIUPfuLmBLPC
-      2b0R9UKQRnKyZdLas8DsfrfuJzvMB4oOMbiTLZUCgYEA1eiTsg0ZjMyHo1FRjBgs
-      8BfogPqkctGW7es+HMC+6C5TzdrvY3tavuSvFfDmirSfP8nxPNs2vlyuZu5r9sNl
-      j9+A4J8OzJ19O6L0CKc4waD9kT7JBXshn2D3Tbdje5MwCOVsI9PgTAsNq+k2tHvk
-      ZtIB8cYzDJFv3RsWYKxL7VECgYA7f4t4lIVz8XZBL1OPP9w2oz1b11Ytpjg7zWhX
-      eclLK5CCw1eq9gbFB1ZEPmzzfVx2WHVI39kdBsLsIkJwBg4URQOUkzLHC3DowWHh
-      HJ0+vauIwRwT/VrcTgmrbnham7XouV+2oZZiHy3c2g3AxHQ5W72nZ97XaOengcnx
-      kGEp8QKBgDcRxMlW7H19SWf2KeEJQyCMn5ZVOY1FXvYkaCB23bDfEzOVMLfok/zu
-      Hbe7PUrFwstpd7KzDLGMLMrezLK3ebFhV1Pd2w3ebVLi6g0ZzF4VdCrtPJyjlgRL
-      nD2aw+WrapDcz1AfRauf9zBLiR2IfQ3drdfabOOobhyEpHmjdrrc
-      -----END RSA PRIVATE KEY-----
-
 Luego de esto nos dirigimos a crear nuestro archivo **vm-provision.yml**, el cual será el playbook de ansible que ejecutaremos en nuestra máquina virtual remota mediante ssh. 🚀
 
 A continuación el código de nuestro playbook de ansible. :computer:
